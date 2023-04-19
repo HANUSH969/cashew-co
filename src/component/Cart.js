@@ -1,10 +1,10 @@
 import React from 'react';
-import {useContext} from 'react';
+import {useContext, useState} from 'react';
 import {CartContext} from '../Contexts/UserContext.js'
 export default function Cart(){
-  let items = JSON.parse(localStorage.getItem('cart'));
+  let items = localStorage.getItem('cart').length===0 ? []: JSON.parse(localStorage.getItem('cart'));
   let price = items.reduce((sum,item)=>{return sum+item.price},0);
-
+  const [itemsLength,setItemLength] = useState(items.length);
   console.log(items);
     return(
     <div class="cartContainer">
@@ -15,7 +15,7 @@ export default function Cart(){
   </div>
   {items.map((item)=>{return <CartItem url={item.url} price={item.price} />})}
     </div>
-    <CartTotal price={price}/>
+    <CartTotal price={price} setItemLength={setItemLength}/>
 </div>
   );
 }
@@ -38,6 +38,12 @@ function CartItem(props){
 }
 
 function CartTotal(props){
+
+  function handlePlaceOrder(e){
+    e.preventDefault();
+    localStorage.setItem("cart",[''])
+    props.setItemLength(localStorage.getItem("cart").length);
+  }
   return (
     <div class="cartTotal">
       <div class="address">
@@ -59,7 +65,7 @@ function CartTotal(props){
         </div>
       </div>
       <div class="placeorder">
-        <button id="placeorder">placeorder</button>
+        <button id="placeorder" onClick={handlePlaceOrder}>placeorder</button>
         </div>
     </div>
   );

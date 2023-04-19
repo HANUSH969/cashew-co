@@ -39,9 +39,10 @@ export function App(props){
 
   }
   return(
+
       <UserContext.Provider value={localStorage.getItem("user")}>
     <>
-    {!isLoggedIn.current ?
+    {!localStorage.getItem("user") ?
   (<Login userName={userName} passWord={passWord} handleUsernameChange={handleUsernameChange} handlePasswordChange={handlePasswordChange} handleSubmit={handleSubmit}/>):
   (<><NavBar />
   <Outlet /></>)}
